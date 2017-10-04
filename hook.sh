@@ -210,22 +210,7 @@ function unchanged_cert {
     echo "Certificate for domain $DOMAIN is still valid - no action taken"
 }
 
-startup_hook() {
-  # This hook is called before the cron command to do some initial tasks
-  # (e.g. starting a webserver).
-  # While not needed in dehydrated4googlecloud, it has to be there
-
-  :
-}
-
-exit_hook() {
-  # This hook is called at the end of the cron command and can be used to
-  # do some final (cleanup or other) tasks.
-  # While not needed in dehydrated4googlecloud, it has to be there
-
-  :
-}
-
-
-
-HANDLER=$1; shift; $HANDLER $@
+HANDLER="$1"; shift
+if [[ "${HANDLER}" =~ ^(deploy_challenge|clean_challenge|deploy_cert|unchanged_cert)$ ]]; then
+  "$HANDLER" "$@"
+fi
