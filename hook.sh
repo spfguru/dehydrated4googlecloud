@@ -25,7 +25,7 @@ function deploy_challenge {
 
     mainDomainFound=false
     for managedZone in $managedZones; do 
-        IFS=$',' read dnsDomain zonename <<< $managedZone
+        IFS=$',' read dnsDomain zonename <<< "$managedZone"
 
         if [[ "$DOMAIN." == "$dnsDomain" || "$DOMAIN." == *".$dnsDomain" ]]; then
             mainDomainFound=true
