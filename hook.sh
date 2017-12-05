@@ -44,7 +44,7 @@ function deploy_challenge {
     # remove token, if it exists
     existingRecord=`gcloud dns record-sets list --name "_acme-challenge.$DOMAIN." --type TXT --zone $zonename --format='value(name,rrdatas[0],ttl)'`
     existingRecord=${existingRecord//$'\t'/,}
-    IFS=$',' read existingName existingRrdata existingTtl <<< $existingRecord
+    IFS=$',' read existingName existingRrdata existingTtl <<< "$existingRecord"
 
     # Replace threefold """ with single "
     existingRrdata=${existingRrdata//$'"""'/''}
@@ -121,7 +121,7 @@ function clean_challenge {
 
     mainDomainFound=false
     for managedZone in $managedZones; do 
-        IFS=$',' read dnsDomain zonename <<< $managedZone
+        IFS=$',' read dnsDomain zonename <<< "$managedZone"
 
         if [[ "$DOMAIN." == "$dnsDomain" || "$DOMAIN." == *".$dnsDomain" ]]; then
             mainDomainFound=true
@@ -139,7 +139,7 @@ function clean_challenge {
 
     existingRecord=`gcloud dns record-sets list --name "_acme-challenge.$DOMAIN." --type TXT --zone $zonename --format='value(name,rrdatas[0],ttl)'`
     existingRecord=${existingRecord//$'\t'/,}
-    IFS=$',' read existingName existingRrdata existingTtl <<< $existingRecord
+    IFS=$',' read existingName existingRrdata existingTtl <<< "$existingRecord"
 
     # Replace threefold """ with singe "
     existingRrdata=${existingRrdata//$'"""'/''}
