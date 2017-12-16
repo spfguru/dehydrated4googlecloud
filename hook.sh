@@ -50,10 +50,10 @@ function deploy_challenge {
     existingRrdata=${existingRrdata//$'"""'/''}
 
     if [ "$existingName" == "_acme-challenge.$DOMAIN." ]; then
-        gcloud dns record-sets transaction remove "$existingRrdata" --name $existingName --type TXT --ttl $existingTtl --zone $zonename
+        gcloud dns record-sets transaction remove --name $existingName --type TXT --ttl $existingTtl --zone $zonename -- "$existingRrdata" 
     fi
 
-    gcloud dns record-sets transaction add --name "_acme-challenge.$DOMAIN." --ttl 300 --type TXT "$TOKEN_VALUE" --zone $zonename
+    gcloud dns record-sets transaction add --name "_acme-challenge.$DOMAIN." --ttl 300 --type TXT --zone $zonename -- "$TOKEN_VALUE" 
     gcloud dns record-sets transaction describe --zone $zonename
 
     changeID=$(gcloud dns record-sets transaction execute --zone $zonename --format='value(id)')
@@ -144,7 +144,7 @@ function clean_challenge {
     # Replace threefold """ with singe "
     existingRrdata=${existingRrdata//$'"""'/''}
 
-    gcloud dns record-sets transaction remove "$existingRrdata" --name $existingName --type TXT --ttl $existingTtl --zone $zonename
+    gcloud dns record-sets transaction remove $existingName --type TXT --ttl $existingTtl --zone $zonename -- "$existingRrdata" --name
     gcloud dns record-sets transaction execute --zone $zonename
 }
 
