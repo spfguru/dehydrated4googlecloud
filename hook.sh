@@ -144,7 +144,7 @@ function clean_challenge {
     # Replace threefold """ with singe "
     existingRrdata=${existingRrdata//$'"""'/''}
 
-    gcloud dns record-sets transaction remove $existingName --type TXT --ttl $existingTtl --zone $zonename -- "$existingRrdata" --name
+    gcloud dns record-sets transaction remove --name $existingName --type TXT --ttl $existingTtl --zone $zonename -- "$existingRrdata"
     gcloud dns record-sets transaction execute --zone $zonename
 }
 
