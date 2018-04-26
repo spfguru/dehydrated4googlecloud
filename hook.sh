@@ -170,7 +170,7 @@ function deploy_cert {
 
     echo;
     echo "Deploying certificate for $DOMAIN from $KEYFILE and $FULLCHAINFILE"
-    canonicalname=$(sed 's:\.:-:g' <<< $DOMAIN)
+    canonicalname=$(sed -e 's:\.:-:g' -e 's:\*:wildcard:g' <<< $DOMAIN)
     certname=$canonicalname-$(date +%s)
     httpsproxyname=https-proxy-$canonicalname
 
