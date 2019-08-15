@@ -178,14 +178,14 @@ function deploy_cert {
 
 
     if [ "$httpsproxyname" == "$(gcloud compute target-https-proxies describe $httpsproxyname --format='value(name)' &2> /dev/null)" ]; then
-        gcloud compute target-https-proxies update $httpsproxyname --ssl-certificate $certname
+        gcloud compute target-https-proxies update $httpsproxyname --ssl-certificates $certname
     else
         echo "====================================================================================================="
         echo "WARNING: Unable to find https target proxy named '$httpsproxyname' - no automatic update performed";
         echo "YOU have to update your target proxy manually and set the SSL certificate to '$certname'"
         echo "Go to https://console.cloud.google.com/networking/loadbalancing/advanced/targetHttpsProxies/"
         echo "OR run the following command: (change \$MY_HTTPS_PROY_NAME to your actual proxy name)"
-        echo "gcloud compute target-https-proxies update \$MY_HTTPS_PROY_NAME --ssl-certificate $certname"
+        echo "gcloud compute target-https-proxies update \$MY_HTTPS_PROY_NAME --ssl-certificates $certname"
         echo "====================================================================================================="
     fi
 }
